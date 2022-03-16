@@ -21,19 +21,16 @@ public class Main {
         }
 
         Stream<Person> firstStream = persons.stream();
-        long count = firstStream.filter(w -> w.getAge() >= 18).count();
-        System.out.println(count);
+        long count = firstStream.filter(w -> w.getAge() < 18).count();
 
         Stream<Person> secondStream = persons.stream();
-        List<String> surnamesOfСonscripts = secondStream.filter(w -> w.getAge() >= 18)
-                .filter(w -> w.getAge() <= 27)
+        List<String> surnames = secondStream
+                .filter(w -> w.getAge() >= 18 && w.getAge() <= 27 && w.getSex() == Sex.MAN)
                 .map(Person::getFamily).collect(Collectors.toList());
 
         Stream<Person> thirdStream = persons.stream();
         List<Person> workers = thirdStream
-                .filter(w -> (w.getSex().equals(Sex.MAN) && w.getAge() >= 18 && w.getAge() <= 65)
-                        || (w.getSex().equals(Sex.WOMAN) && w.getAge() >= 18 && w.getAge() <= 60))
-                .filter(w -> w.getEducation().equals(Education.HIGHER))
+                .filter(w -> w.getAge() >= 18 && w.getAge() <= (w.getSex() != Sex.MAN ? 60 : 65))
                 .sorted(Comparator.comparing(Person::getFamily))
                 .collect(Collectors.toList());
     }
